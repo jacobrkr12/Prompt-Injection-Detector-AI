@@ -41,3 +41,8 @@ The program displays:
 * Confusion matrix heatmap
 * BERT evaluation metrics
 * Real-time prompt injection predictions
+
+# Future Improvements:
+
+1. This model can currently be manipulated do to in insufficient dataset size. Working on updating this model to analyze a 200000 prompt dataset.
+2. This model only uses BERT when TF-IDF is confidence is low. This allows longer prompts to manipulate the output. In the future both model answers will always be taken into account.

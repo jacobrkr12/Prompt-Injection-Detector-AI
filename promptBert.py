@@ -172,7 +172,7 @@ print(f'Confusion Matrix:')
 print(matrix)
 
 
-#Plot
+#Plot on heatmap
 
 def plot_model(matrix):
     plt.figure(figsize=(10,7))
@@ -186,7 +186,7 @@ plot_model(matrix)
 
 #Allow for user interaction
 
-#Burt Processing for  input
+#Burt Processing for input
 def inputTokenizer(user_input): 
     #Tokenize user input
     clean_input = re.sub(r'[^\x00-\x7F]+','', re.sub(r'\s+', ' ', user_input.lower())).strip()
@@ -200,38 +200,44 @@ def inputTokenizer(user_input):
     #Runs input through trained model 
     with torch.no_grad():
         bertOutput=trainingModel(**trainToken)
+
     #Preps and outputs probability(prob) and prediction(pred)
     logits=bertOutput.logits
     prob=torch.softmax(logits, dim=-1).detach().numpy()[0]
     pred=np.argmax(prob)
     return prob, pred
     
-    #Recieve
-running = True
-while running == True:
+    #Recieve user input
+while True:
     user_input = input("Enter your prompt or EXIT: ")
     if user_input == "EXIT":
-        running = False
+        exit()
+
     else:
+        #EMBEDDINGS on Prompt
         prob, pred = inputTokenizer(user_input)
-        print(prob)
-        print(pred)
-        """
+        #TF-IDF on Prompt
         clean_input = re.sub(r'[^a-z\s]', '', re.sub(r'\s+', ' ', user_input.lower())).strip()
-            #Process
         input_vector = vectorizer.transform([clean_input])
         prediction=best_model.predict(input_vector)[0]
         probability = best_model.predict_proba(input_vector)[0]
-            #Output Calculation
-        if prediction == 1:
-            print("\033[31mThis prompt may be malicious.")
-            print(f'The probability this prompt is malicious is: {probability[1]*100:.2f}%.',"\033[0m\n")
-        elif prediction == 0:
+    
+        #When TF-IDF isn't confident use bert instead
+        #TF-IDF has lower confidence in its output when manipulation methods are used
+        if 0.3 < probability[1] < 0.7:
+            outputResult = pred
+        else:
+            outputResult = prediction
+        
+        if outputResult == 1:
+            print("\033[31mThis prompt may be malicious.\033[0m\n")
+        elif outputResult == 0:
             print("\033[32mThis prompt is safe.\033[0m\n")
         else:
             print("\033[31mThere was an error.\033[0m\n")
-        """
 
 
-
-
+"""
+ADD PREDICTION OUTPUT:
+print(f'The probability this prompt is malicious is: {probability[1]*100:.2f}%.',"\033[0m\n")
+"""

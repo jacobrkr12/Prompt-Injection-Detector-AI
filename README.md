@@ -1,4 +1,43 @@
-# Prompt-Injection-Detector-AI
-Development of an AI using Scikit-Learn and PyTorch in Python. Hyperparameter tuning using both TF-IDF and BERT embeddings. 99.73% accuracy on dataset but still in development.
-# Dataset
-This AI is currently running on a small dataset. It has neither been trained with names of organizations nor malicious prompts outside of authentication info. Currently, one may find this AI easy to manipulate but future updates and improvements will make it much more reliable. 
+# Prompt Injection Detector
+
+This project implements a hybrid machine learning system using **TF-IDF + Logistic Regression** and **BERT (bert-base-uncased)** to detect malicious prompt injections.
+This AI is still being fine-tuned and in-progress. Expect frequent updates.
+
+## Features
+
+* Data cleaning and preprocessing
+* TF-IDF vectorization + Logistic Regression with GridSearchCV
+* BERT fine-tuning using HuggingFace Trainer
+* Confidence-based model switching
+* Interactive user input for live predictions
+
+## Dataset
+
+This program uses a csv file that is 2500 lines. Future updates will increase the size for more reliable consistency. 
+You can currently replace the prompt.csv file with proper format csv or a parquet file with read_parquet.
+
+with columns:
+text,label
+
+
+Labels must be:
+injection, safe
+
+
+## Running the Program
+
+The script will:
+
+1. Clean and vectorize text for TF-IDF
+2. Fine-tune a BERT model
+3. Evaluate both models
+4. Enter an interactive prompt mode where you can type sample prompts
+
+## Output
+
+The program displays:
+
+* Logistic Regression accuracy
+* Confusion matrix heatmap
+* BERT evaluation metrics
+* Real-time prompt injection predictions
